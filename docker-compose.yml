@@ -1,0 +1,46 @@
+version: "3.9"
+services:
+  pabtbackend:
+    build:
+      context: .
+      dockerfile: backend/build/Dockerfile
+    container_name: pabtbackend
+    ports:
+    - "8000:8000"   # for API_Endpoint
+    volumes:
+#    - ${HOST_MOUNT_POINT}:/home/${AION_USER}/mountpoint
+    - ./backend:/home/pabt
+    - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - pabt_network
+
+  pabtfrontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: pabtfrontend
+    volumes:
+      - frontend_node_modules:/home/pabt/app/node_modules
+      - ./frontend:/home/pabt/frontend
+#      - ./frontend/public:/home/pabt/frontend/public      # Sync local directory with container directory
+##      - ./frontend/app:/home/pabt/frontend/app
+#      - ./frontend/.env:/home/pabt/frontend/.env
+#      - ./frontend/src:/home/pabt/frontend/src
+#      - ./frontend/package.json:/home/pabt/frontend/package.json
+
+    ports:
+      - "3000:3000"  # Map container's port 3000 to host's port 3000
+    stdin_open: true
+    tty: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true  # Use polling for hot-reloading (important for file sync)
+    networks:
+      - pabt_network
+
+volumes:
+  frontend_node_modules:
+    name: "PABT_Frontend_Node_Modules"
+
+networks:
+  pabt_network:
+    driver: bridge
