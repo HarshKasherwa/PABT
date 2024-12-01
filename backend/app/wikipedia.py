@@ -7,7 +7,7 @@ import wikipediaapi
 import wikipedia
 from bs4 import BeautifulSoup
 
-router = APIRouter()
+wiki_router = APIRouter()
 
 project_name = "PABT"
 user = "kasherwa.h@gmail.com"
@@ -20,7 +20,7 @@ headers = {
 base_url = 'https://api.wikimedia.org/core/v1/wikipedia/'
 language_code = 'en'
 
-@router.get("/search")
+@wiki_router.get("/search")
 async def search_wikipedia(keyword: str):
     search_results = wikipedia.search(keyword)
     # wiki_wiki = wikipediaapi.Wikipedia(
@@ -37,7 +37,7 @@ async def search_wikipedia(keyword: str):
     except Exception as e:
         return HTTPException(status_code=404, detail="Article not found")
 
-@router.get("/search2")
+@wiki_router.get("/search2")
 async def search_wikipedia2(keyword: str):
     search_query = keyword
     number_of_results = 10
@@ -60,7 +60,7 @@ def get_full_wiki_page(title):
     else:
         return None
 
-@router.get("/get_page")
+@wiki_router.get("/get_page")
 async def get_page(title: str):
     content = get_full_wiki_page(title)
     if content:
@@ -69,7 +69,7 @@ async def get_page(title: str):
         return HTMLResponse(content="<h1>Page not found</h1>", status_code=404)
 
 
-@router.get("/get_page_desc")
+@wiki_router.get("/get_page_desc")
 async def get_page_desc(title: str):
     url = "https://en.wikipedia.org/w/api.php"
     params = {
@@ -83,7 +83,7 @@ async def get_page_desc(title: str):
     response = requests.get(url, headers=headers, params=params)
     return response.json()
 
-@router.post("/save")
+@wiki_router.post("/save")
 async def save_article(article: dict):
     # Implement save logic
     pass

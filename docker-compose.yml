@@ -4,6 +4,8 @@ services:
     build:
       context: .
       dockerfile: backend/build/Dockerfile
+      args:
+        - CA_CERT=${CA_CERT}
     container_name: pabtbackend
     ports:
     - "8000:8000"   # for API_Endpoint
@@ -11,6 +13,8 @@ services:
 #    - ${HOST_MOUNT_POINT}:/home/${AION_USER}/mountpoint
     - ./backend:/home/pabt
     - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
     networks:
       - pabt_network
 

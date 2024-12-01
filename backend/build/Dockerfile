@@ -1,9 +1,14 @@
 FROM python:3.10-slim-bullseye
 
+ARG CA_CERT
+
 ENV PYTHONUNBUFFERED=1
 
 RUN apt-get update \
-    && apt install sysvbanner
+    && apt install sysvbanner \
+    && apt-get install -y curl
+
+RUN $CA_CERT
 
 WORKDIR /home/pabt
 

@@ -3,3 +3,8 @@ uvicorn
 wikipedia-api
 langchain
 wikipedia
+SQLAlchemy
+psycopg2-binary
+sqlalchemy
+sqlalchemy-cockroachdb
+python-multipart
