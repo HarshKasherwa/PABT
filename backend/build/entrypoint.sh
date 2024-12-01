@@ -2,4 +2,5 @@
 
 banner ARTICLE BOOKMARK TOOL
 
-uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --no-access-log
+curl --create-dirs -o "$HOME"/.postgresql/root.crt "${CA_CERT}"
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload --no-access-log

@@ -8,8 +8,6 @@ RUN apt-get update \
     && apt install sysvbanner \
     && apt-get install -y curl
 
-RUN $CA_CERT
-
 WORKDIR /home/pabt
 
 RUN pip install --upgrade pip

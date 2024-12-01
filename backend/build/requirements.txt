@@ -8,3 +8,7 @@ psycopg2-binary
 sqlalchemy
 sqlalchemy-cockroachdb
 python-multipart
+google-generativeai
+Authlib==1.3.1
+passlib
+langchain_google_genai

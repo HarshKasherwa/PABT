@@ -1,11 +1,6 @@
-import json
-
 import requests
-from starlette.responses import HTMLResponse
-from fastapi import APIRouter, HTTPException
 import wikipediaapi
-import wikipedia
-from bs4 import BeautifulSoup
+from fastapi import APIRouter, HTTPException
 
 wiki_router = APIRouter()
 
@@ -20,25 +15,11 @@ headers = {
 base_url = 'https://api.wikimedia.org/core/v1/wikipedia/'
 language_code = 'en'
 
-@wiki_router.get("/search")
+@wiki_router.get(
+    path="/search_wikipedia",
+    tags=["Article Search"],
+)
 async def search_wikipedia(keyword: str):
-    search_results = wikipedia.search(keyword)
-    # wiki_wiki = wikipediaapi.Wikipedia(
-    #     user_agent="YOUR_APP_NAME (YOUR_EMAIL_OR_CONTACT_PAGE)",
-    #     language='en',
-    # )
-    # search_results = wiki_wiki.(keyword)
-    print(f"type: {type(search_results)}")
-    # print(f"search_results: {search_results}")
-    print(search_results)
-    try:
-        # return {"articles": search_results}
-        return search_results
-    except Exception as e:
-        return HTTPException(status_code=404, detail="Article not found")
-
-@wiki_router.get("/search2")
-async def search_wikipedia2(keyword: str):
     search_query = keyword
     number_of_results = 10
     endpoint = '/search/page'
@@ -60,30 +41,13 @@ def get_full_wiki_page(title):
     else:
         return None
 
-@wiki_router.get("/get_page")
+@wiki_router.get(
+    path="/get_page",
+    tags=["Article Search"],
+)
 async def get_page(title: str):
     content = get_full_wiki_page(title)
     if content:
-        return HTMLResponse(content=content)
+        return content
     else:
-        return HTMLResponse(content="<h1>Page not found</h1>", status_code=404)
-
-
-@wiki_router.get("/get_page_desc")
-async def get_page_desc(title: str):
-    url = "https://en.wikipedia.org/w/api.php"
-    params = {
-        'action': 'parse',
-        'format': 'json',
-        'page': title,  # The page title from the URL
-        'prop': 'text',
-        'redirects': True,
-    }
-
-    response = requests.get(url, headers=headers, params=params)
-    return response.json()
-
-@wiki_router.post("/save")
-async def save_article(article: dict):
-    # Implement save logic
-    pass
+        return HTTPException(status_code=404, detail="Article not found")

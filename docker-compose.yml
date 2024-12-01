@@ -4,8 +4,6 @@ services:
     build:
       context: .
       dockerfile: backend/build/Dockerfile
-      args:
-        - CA_CERT=${CA_CERT}
     container_name: pabtbackend
     ports:
     - "8000:8000"   # for API_Endpoint
@@ -14,7 +12,11 @@ services:
     - ./backend:/home/pabt
     - /var/run/docker.sock:/var/run/docker.sock
     environment:
+      - CA_CERT=${CA_CERT}
       - DATABASE_URL=${DATABASE_URL}
+      - SECRET_KEY=${SECRET_KEY}
+      - ALGORITHM=${ALGORITHM}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
     networks:
       - pabt_network
 

@@ -16,7 +16,6 @@ def validate_model_object(model_obj):
             continue  # Skip validation for attributes that are not set
         attr = getattr(model_class, column_name)
         if isinstance(attr.type, TypeDecorator):
-            print(f"Validating ENUM: {column_name}, value: {value}")
             attr_obj = type(attr.type)
             if (
                 value not in attr_obj.enum_class.__members__
@@ -164,7 +163,7 @@ class Users(Base):
 
     """
     userId = Column(Integer, Identity(start=101), primary_key=True)
-    username = Column(String, nullable=False)
+    username = Column(String, nullable=False, unique=True)
     password = Column(String, nullable=True)
 
     # Define the relationship to Articles
@@ -183,14 +182,12 @@ class Articles(Base):
         | Column Name    | Data Type | Nullable |
         |----------------|-----------|----------|
         | articleId      | int       | No       |
-        | wikiId         | int       | No       |
         | userId (FK)    | int       | No       |
         | title          | string    | No       |
         | tags           | array     | Yes      |
 
     """
     articleId = Column(Integer, Identity(start=101), primary_key=True)
-    wikiId = Column(Integer, nullable=False)
     # ForeignKey to User.userId
     userId = Column(
         Integer,
